@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Media | Kenilworth Walking Trail</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+
+<header>
+    <h1>Kenilworth People & Places Trail</h1>
+
+    <button class="menu-toggle" aria-label="Open navigation menu">
+        ☰
+    </button>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="places.html">Trail Stops</a></li>
+            <li><a href="media.html">Media</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<main>
+
+<section class="page-intro">
+
+<h2>Student Media & Interactive Content</h2>
+
+<p>
+Explore documentary videos and interactive learning games.
+</p>
+
+</section>
+
+
+<section class="video-section">
+
+<h3>Trail Documentary</h3>
+
+<div class="video-container">
+
+<video controls width="100%">
+
+<source src="videos/trail-documentary.mp4" type="video/mp4">
+
+Your browser does not support video playback.
+
+</video>
+
+</div>
+
+</section>
+
+<section class="gallery-section">
+
+<h3>Photo Gallery</h3>
+
+<div class="gallery-grid">
+
+<img src="images/1.jpg" alt="Kenilworth scene">
+<img src="images/2.jpg" alt="Kenilworth scene">
+<img src="images/3.jpg" alt="Kenilworth scene">
+<img src="images/4.jpg" alt="Kenilworth scene">
+<img src="images/5.jpg" alt="Kenilworth scene">
+<img src="images/6.jpg" alt="Kenilworth scene">
+<img src="images/7.jpg" alt="Kenilworth scene">
+<img src="images/8.jpg" alt="Kenilworth scene">
+<img src="images/9.jpg" alt="Kenilworth scene">
+<img src="images/10.jpg" alt="Kenilworth scene">
+<img src="images/11.jpg" alt="Kenilworth scene">
+<img src="images/12.jpg" alt="Kenilworth scene">
+<img src="images/13.jpg" alt="Kenilworth scene">
+
+</div>
+
+</section>
+
+<section class="games-section">
+
+<h3>Interactive Learning Games</h3>
+
+<div class="game-container">
+
+<h4>Backpack Packing Challenge</h4>
+<iframe src="games/backpack-packing.html"></iframe>
+
+<h4>Leave No Trace Quiz</h4>
+<iframe src="games/leave-no-trace.html"></iframe>
+
+<h4>Siege of Kenilworth</h4>
+<iframe src="games/seige-of-kenilworth.html"></iframe>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+    <p>© 2026 Kenilworth People & Places Trail</p>
+    <p>Visitor enquiries: Warwick District Council | CV32 5HZ</p>
+</footer>
+
+
+<script>
+
+const toggleButton = document.querySelector(".menu-toggle");
+const navLinks = document.querySelector(".nav-links");
+
+toggleButton.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+});
+
+</script>
+
+</body>
+
+</html>

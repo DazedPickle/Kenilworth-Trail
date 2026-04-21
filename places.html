@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Historic Places | Kenilworth Walking Trail</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const toggle = document.querySelector(".menu-toggle");
+    const nav = document.querySelector(".nav-links");
+
+    toggle.addEventListener("click", function(){
+        nav.classList.toggle("active");
+    });
+
+});
+</script>
+
+<body>
+
+<header>
+    <h1>Kenilworth People & Places Trail</h1>
+
+    <button class="menu-toggle" aria-label="Open navigation menu">
+        ☰
+    </button>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="places.html">Trail Stops</a></li>
+            <li><a href="media.html">Media</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<main>
+
+<section class="page-intro">
+
+<h2>Historic Places Along The Trail</h2>
+
+<p>
+Discover important landmarks that tell the story of Kenilworth’s people and heritage.
+</p>
+
+</section>
+
+
+<section class="places-grid">
+
+<div class="place-card">
+
+<h3>Kenilworth Castle</h3>
+
+<p>
+A historic medieval fortress with royal connections and panoramic views.
+</p>
+
+</div>
+
+
+<div class="place-card">
+
+<h3>Abbey Fields</h3>
+
+<p>
+Historic parkland with scenic walking routes and religious ruins.
+</p>
+
+</div>
+
+
+<div class="place-card">
+
+<h3>High Street</h3>
+
+<p>
+Traditional architecture and historic independent businesses.
+</p>
+
+</div>
+
+
+<div class="place-card">
+
+<h3>St Nicholas Church</h3>
+
+<p>
+Historic parish church connected to the abbey’s medieval heritage.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+    <p>© 2026 Kenilworth People & Places Trail</p>
+    <p>Visitor enquiries: Warwick District Council | CV32 5HZ</p>
+</footer>
+
+
+<script>
+
+const toggleButton =
+document.querySelector(".menu-toggle");
+
+const navLinks =
+document.querySelector(".nav-links");
+
+toggleButton.addEventListener("click", () => {
+
+navLinks.classList.toggle("show");
+
+const expanded =
+toggleButton.getAttribute("aria-expanded") === "true";
+
+toggleButton.setAttribute("aria-expanded", !expanded);
+
+});
+
+</script>
+
+</body>
+
+</html>

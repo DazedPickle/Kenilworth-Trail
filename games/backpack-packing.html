@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Your Trail Backpack</title>
+  <style>
+    :root {
+      --bg: #f4f1e8;
+      --card: #ffffff;
+      --text: #1f2a20;
+      --muted: #667164;
+      --accent: #2f6f4f;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #e8f2df 0%, #f7f3ea 45%, #efe7d9 100%);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(47,111,79,0.97), rgba(87,135,89,0.93));
+      color: white;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: rgba(255,255,255,0.92);
+      line-height: 1.55;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      opacity: 0.9;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .pack-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: #eef5ee;
+      color: #234a32;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .trail-card {
+      background: linear-gradient(180deg, #dff0cf 0%, #f3edd8 100%);
+      border-radius: 24px;
+      border: 2px solid #d8e5d0;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .trail-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .trail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .need {
+      background: rgba(255,255,255,0.76);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+      font-weight: 700;
+      color: #2a4530;
+      min-height: 78px;
+      display: grid;
+      place-items: center;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .item {
+      border: 2px solid #e0e8dc;
+      background: #fafcf8;
+      border-radius: 18px;
+      padding: 14px 10px;
+      cursor: pointer;
+      transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease, opacity 0.2s ease;
+      text-align: center;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .item:hover,
+    .item:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.1);
+      border-color: #bfd1c0;
+      outline: none;
+    }
+
+    .item.selected {
+      border-color: var(--accent);
+      background: #edf7ef;
+      box-shadow: 0 10px 22px rgba(47,111,79,0.12);
+    }
+
+    .item.packed {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .emoji {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .label {
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .backpack-zone {
+      background: linear-gradient(180deg, #f3efe5 0%, #ece3d2 100%);
+      border-radius: 24px;
+      padding: 18px;
+      border: 2px dashed #d3c6ae;
+      min-height: 420px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .backpack {
+      width: min(340px, 100%);
+      min-height: 300px;
+      margin: 12px auto 18px;
+      border-radius: 30px 30px 26px 26px;
+      background: linear-gradient(180deg, #9b6c4b 0%, #7f563b 100%);
+      position: relative;
+      box-shadow: inset 0 -10px 20px rgba(0,0,0,0.12), 0 20px 30px rgba(0,0,0,0.12);
+      padding: 74px 18px 20px;
+    }
+
+    .backpack::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 160px;
+      height: 44px;
+      border-radius: 18px 18px 8px 8px;
+      background: #6a452f;
+    }
+
+    .backpack::after {
+      content: "";
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 50px;
+      border: 10px solid #6a452f;
+      border-bottom: none;
+      border-radius: 22px 22px 0 0;
+    }
+
+    .pack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .pack-slot {
+      background: rgba(255,255,255,0.15);
+      border: 2px dashed rgba(255,255,255,0.26);
+      border-radius: 16px;
+      min-height: 82px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: rgba(255,255,255,0.92);
+      font-size: 1.7rem;
+      text-align: center;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .pack-slot span {
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    .pack-slot:hover {
+      transform: translateY(-2px);
+    }
+
+    .pack-slot.filled {
+      background: rgba(255,255,255,0.22);
+      border-style: solid;
+      color: white;
+      font-size: 1.6rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    button.control {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+      box-shadow: var(--shadow);
+      transition: transform 0.14s ease;
+    }
+
+    button.control.secondary {
+      background: #f3f6f1;
+      color: #244831;
+      border: 1px solid #d7e1d5;
+      box-shadow: none;
+    }
+
+    button.control:hover {
+      transform: translateY(-2px);
+    }
+
+    .log {
+      margin-top: 14px;
+      min-height: 70px;
+      border-radius: 16px;
+      background: #f7faf5;
+      border: 1px solid #e1e9dd;
+      padding: 12px 14px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .log strong { color: var(--text); }
+
+    .legend {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .mini {
+      background: #f7faf5;
+      border: 1px solid #e0e8dc;
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 28, 21, 0.58);
+      display: none;
+      place-items: center;
+      padding: 20px;
+      z-index: 20;
+    }
+
+    .overlay.show { display: grid; }
+
+    .modal {
+      width: min(580px, 100%);
+      background: white;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 22px 40px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .modal h3 {
+      margin: 0 0 10px;
+      font-size: 2rem;
+    }
+
+    .modal p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #edf6ea;
+      color: #25552f;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 10px 16px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .items-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .wrap { padding: 14px; }
+      .hero, .card { padding: 16px; }
+      .trail-grid, .legend { grid-template-columns: 1fr; }
+      .items-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stats { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Build Your Trail Backpack</h1>
+      <p>
+        Choose what to pack for the trail. You can place any item into any empty backpack slot.
+        At the end, your score is based on how prepared your final backpack is.
+      </p>
+
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Packed</div><div class="stat-value" id="packedCount">0/6</div></div>
+        <div class="stat"><div class="stat-label">Preparedness</div><div class="stat-value" id="preparedness">0%</div></div>
+        <div class="stat"><div class="stat-label">Essential Items</div><div class="stat-value" id="essentials">0/6</div></div>
+        <div class="stat"><div class="stat-label">Funny Choices</div><div class="stat-value" id="mistakes">0</div></div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <section class="card">
+        <div class="pack-header">
+          <div class="pill">🎒 Pack any 6 items</div>
+          <div class="pill" id="selectionStatus">No item selected</div>
+        </div>
+
+        <div class="trail-card">
+          <h3>Today’s trail conditions</h3>
+          <p>
+            Mild weather, chance of drizzle, mixed sun and shade, and some muddy patches.
+            Pick the best combination of six items for a safe, sensible hike.
+          </p>
+
+          <div class="trail-grid">
+            <div class="need">💧 Water matters</div>
+            <div class="need">🗺️ Route planning helps</div>
+            <div class="need">🧥 Weather can change</div>
+            <div class="need">🍎 Snacks keep energy up</div>
+            <div class="need">🩹 Safety is useful</div>
+            <div class="need">🔦 Backup gear helps</div>
+          </div>
+        </div>
+
+        <h2>Choose an item</h2>
+        <p>Click an item, then click any empty slot in the backpack.</p>
+
+        <div class="items-grid">
+          <button class="item" data-name="Water Bottle" data-essential="true" data-value="20">
+            <div class="emoji">💧</div>
+            <div class="label">Water Bottle</div>
+            <div class="sub">Hydration for the walk</div>
+          </button>
+
+          <button class="item" data-name="Trail Map" data-essential="true" data-value="16">
+            <div class="emoji">🗺️</div>
+            <div class="label">Trail Map</div>
+            <div class="sub">Stay on the route</div>
+          </button>
+
+          <button class="item" data-name="Rain Jacket" data-essential="true" data-value="16">
+            <div class="emoji">🧥</div>
+            <div class="label">Rain Jacket</div>
+            <div class="sub">For showers and wind</div>
+          </button>
+
+          <button class="item" data-name="Snack" data-essential="true" data-value="14">
+            <div class="emoji">🍎</div>
+            <div class="label">Snack</div>
+            <div class="sub">Energy on the go</div>
+          </button>
+
+          <button class="item" data-name="First Aid Kit" data-essential="true" data-value="18">
+            <div class="emoji">🩹</div>
+            <div class="label">First Aid Kit</div>
+            <div class="sub">Useful for small issues</div>
+          </button>
+
+          <button class="item" data-name="Torch" data-essential="true" data-value="10">
+            <div class="emoji">🔦</div>
+            <div class="label">Torch</div>
+            <div class="sub">Helpful backup gear</div>
+          </button>
+
+          <button class="item" data-name="Sofa" data-essential="false" data-value="-18">
+            <div class="emoji">🛋️</div>
+            <div class="label">Sofa</div>
+            <div class="sub">Comfortable, but not useful</div>
+          </button>
+
+          <button class="item" data-name="Hair Dryer" data-essential="false" data-value="-12">
+            <div class="emoji">💨</div>
+            <div class="label">Hair Dryer</div>
+            <div class="sub">Not ideal in the woods</div>
+          </button>
+
+          <button class="item" data-name="Television Remote" data-essential="false" data-value="-10">
+            <div class="emoji">📺</div>
+            <div class="label">TV Remote</div>
+            <div class="sub">Won’t help outdoors</div>
+          </button>
+
+          <button class="item" data-name="Bowling Ball" data-essential="false" data-value="-20">
+            <div class="emoji">🎳</div>
+            <div class="label">Bowling Ball</div>
+            <div class="sub">Heavy and unnecessary</div>
+          </button>
+
+          <button class="item" data-name="Toaster" data-essential="false" data-value="-16">
+            <div class="emoji">🍞</div>
+            <div class="label">Toaster</div>
+            <div class="sub">Great indoors, not on a trail</div>
+          </button>
+
+          <button class="item" data-name="Rubber Duck" data-essential="false" data-value="-8">
+            <div class="emoji">🦆</div>
+            <div class="label">Rubber Duck</div>
+            <div class="sub">Cute, but not hiking gear</div>
+          </button>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>Your backpack</h2>
+        <p>Any item can go into any empty slot. Your final backpack is scored when you finish.</p>
+
+        <div class="backpack-zone">
+          <div class="backpack">
+            <div class="pack-grid">
+              <button class="pack-slot" data-slot="1">＋<span>Slot 1</span></button>
+              <button class="pack-slot" data-slot="2">＋<span>Slot 2</span></button>
+              <button class="pack-slot" data-slot="3">＋<span>Slot 3</span></button>
+              <button class="pack-slot" data-slot="4">＋<span>Slot 4</span></button>
+              <button class="pack-slot" data-slot="5">＋<span>Slot 5</span></button>
+              <button class="pack-slot" data-slot="6">＋<span>Slot 6</span></button>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="control secondary" id="resetBtn">Reset</button>
+            <button class="control" id="finishBtn">Finish Pack</button>
+          </div>
+
+          <div class="log" id="log">
+            <strong>How to play:</strong> Click an item, then click any empty backpack slot. When you're done, press Finish Pack for your preparedness score.
+          </div>
+
+          <div class="legend">
+            <div class="mini"><strong>High score</strong><br>Pack sensible hiking gear like water, map, jacket, snack, first aid, and torch.</div>
+            <div class="mini"><strong>Low score</strong><br>Funny household items will drag down your preparedness.</div>
+            <div class="mini"><strong>Freedom</strong><br>There are no slot restrictions now.</div>
+            <div class="mini"><strong>Goal</strong><br>Build the smartest set of six items.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="badge" id="badgeText">Trail Starter</div>
+      <h3 id="finalTitle">Backpack scored!</h3>
+      <p id="finalMessage"></p>
+      <button class="control" id="playAgainBtn">Play Again</button>
+    </div>
+  </div>
+
+  <script>
+    const items = [...document.querySelectorAll('.item')];
+    const packSlots = [...document.querySelectorAll('.pack-slot')];
+    const packedCountEl = document.getElementById('packedCount');
+    const preparednessEl = document.getElementById('preparedness');
+    const essentialsEl = document.getElementById('essentials');
+    const mistakesEl = document.getElementById('mistakes');
+    const selectionStatusEl = document.getElementById('selectionStatus');
+    const logEl = document.getElementById('log');
+    const resetBtn = document.getElementById('resetBtn');
+    const finishBtn = document.getElementById('finishBtn');
+    const overlay = document.getElementById('overlay');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    const finalTitle = document.getElementById('finalTitle');
+    const finalMessage = document.getElementById('finalMessage');
+    const badgeText = document.getElementById('badgeText');
+
+    let selectedItem = null;
+    let packedItems = {};
+
+    function clearSelection() {
+      selectedItem = null;
+      items.forEach(item => item.classList.remove('selected'));
+      selectionStatusEl.textContent = 'No item selected';
+    }
+
+    function selectItem(item) {
+      if (item.classList.contains('packed')) return;
+      items.forEach(btn => btn.classList.remove('selected'));
+      item.classList.add('selected');
+      selectedItem = item;
+      selectionStatusEl.textContent = `Selected: ${item.dataset.name}`;
+    }
+
+    function getPackedArray() {
+      return Object.values(packedItems);
+    }
+
+    function calculatePreparedness() {
+      const packed = getPackedArray();
+      const essentials = packed.filter(item => item.dataset.essential === 'true').length;
+      const funnyChoices = packed.filter(item => item.dataset.essential !== 'true').length;
+      const rawScore = packed.reduce((sum, item) => sum + Number(item.dataset.value || 0), 0);
+
+      const preparedness = Math.max(0, Math.min(100, rawScore));
+      return { preparedness, essentials, funnyChoices, rawScore };
+    }
+
+    function updateUI() {
+      const packed = getPackedArray();
+      const result = calculatePreparedness();
+
+      packedCountEl.textContent = `${packed.length}/6`;
+      preparednessEl.textContent = `${result.preparedness}%`;
+      essentialsEl.textContent = `${result.essentials}/6`;
+      mistakesEl.textContent = result.funnyChoices;
+    }
+
+    function renderBackpack() {
+      packSlots.forEach(slot => {
+        const key = slot.dataset.slot;
+        const item = packedItems[key];
+
+        if (!item) {
+          slot.innerHTML = `＋<span>Slot ${key}</span>`;
+          slot.classList.remove('filled');
+          slot.title = '';
+        } else {
+          slot.innerHTML = `${item.querySelector('.emoji').textContent}<span>${item.dataset.name}</span>`;
+          slot.classList.add('filled');
+          slot.title = item.dataset.name;
+        }
+      });
+    }
+
+    function setLog(message) {
+      logEl.innerHTML = message;
+    }
+
+    function placeIntoSlot(slotEl) {
+      if (!selectedItem) {
+        setLog('<strong>No item selected:</strong> click an item first, then click any empty backpack slot.');
+        return;
+      }
+
+      const key = slotEl.dataset.slot;
+
+      if (packedItems[key]) {
+        setLog('<strong>Slot already filled:</strong> choose a different empty slot.');
+        return;
+      }
+
+      packedItems[key] = selectedItem;
+      selectedItem.classList.add('packed');
+
+      if (selectedItem.dataset.essential === 'true') {
+        setLog(`<strong>Packed:</strong> ${selectedItem.dataset.name} is a strong trail choice.`);
+      } else {
+        setLog(`<strong>Packed:</strong> ${selectedItem.dataset.name} is funny, but it may hurt your preparedness score.`);
+      }
+
+      renderBackpack();
+      clearSelection();
+      updateUI();
+
+      if (getPackedArray().length === 6) {
+        finishGame();
+      }
+    }
+
+    function finishGame() {
+      const packed = getPackedArray();
+      const result = calculatePreparedness();
+
+      let badge = 'Trail Starter';
+      let title = 'Backpack scored!';
+      let message = `You packed <strong>${packed.length}</strong> items, including <strong>${result.essentials}</strong> essential hiking item(s), for a preparedness score of <strong>${result.preparedness}%</strong>.`;
+
+      if (packed.length < 6) {
+        badge = 'Not Fully Packed';
+        title = 'Almost there!';
+        message += ' Fill more slots for a more accurate preparedness rating.';
+      } else if (result.preparedness >= 90) {
+        badge = 'Gold Trail Packer';
+        message += ' Excellent choices — this backpack is very well prepared for the trail.';
+      } else if (result.preparedness >= 70) {
+        badge = 'Prepared Explorer';
+        message += ' Good pack overall. You brought most of what a hiker would need.';
+      } else if (result.preparedness >= 40) {
+        badge = 'Learning Hiker';
+        message += ' Some useful items are here, but the backpack could be improved.';
+      } else {
+        badge = 'Comedy Camper';
+        message += ' This pack is more funny than functional.';
+      }
+
+      badgeText.textContent = badge;
+      finalTitle.textContent = title;
+      finalMessage.innerHTML = message;
+      overlay.classList.add('show');
+    }
+
+    function resetGame() {
+      selectedItem = null;
+      packedItems = {};
+
+      items.forEach(item => {
+        item.classList.remove('selected', 'packed');
+      });
+
+      renderBackpack();
+      clearSelection();
+      updateUI();
+      overlay.classList.remove('show');
+      setLog('<strong>How to play:</strong> Click an item, then click any empty backpack slot. When you are done, press Finish Pack for your preparedness score.');
+    }
+
+    items.forEach(item => {
+      item.addEventListener('click', () => selectItem(item));
+    });
+
+    packSlots.forEach(slot => {
+      slot.addEventListener('click', () => placeIntoSlot(slot));
+    });
+
+    resetBtn.addEventListener('click', resetGame);
+    finishBtn.addEventListener('click', finishGame);
+    playAgainBtn.addEventListener('click', resetGame);
+
+    renderBackpack();
+    updateUI();
+  </script>
+</body>
+</html>

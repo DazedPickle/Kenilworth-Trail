@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kenilworth Walking Trail</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const toggle = document.querySelector(".menu-toggle");
+    const nav = document.querySelector(".nav-links");
+
+    toggle.addEventListener("click", function(){
+        nav.classList.toggle("active");
+    });
+
+});
+</script>
+
+<body>
+
+<header>
+    <h1>Kenilworth People & Places Trail</h1>
+
+    <button class="menu-toggle" aria-label="Toggle navigation">
+        ☰
+    </button>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="places.html">Trail Stops</a></li>
+            <li><a href="media.html">Media</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<main>
+
+<section class="hero">
+<h2>Discover Kenilworth’s History</h2>
+<p>
+Explore the Kenilworth People & Places Walking Trail and uncover the
+historic landmarks, stories, and locations that have shaped the town
+over the centuries.
+</p>
+</section>
+
+<section class="trail-overview">
+<h2>Trail Information</h2>
+
+<div class="overview-grid">
+
+<div class="overview-item">
+<h3>Distance</h3>
+<p>Approximately 3 miles (4.8 km)</p>
+</div>
+
+<div class="overview-item">
+<h3>Duration</h3>
+<p>1.5 – 2 hours walking time</p>
+</div>
+
+<div class="overview-item">
+<h3>Difficulty</h3>
+<p>Easy to moderate</p>
+</div>
+
+<div class="overview-item">
+<h3>Starting Point</h3>
+<p>Kenilworth Town Centre</p>
+</div>
+
+</div>
+</section>
+
+<section class="trail-purpose">
+<h2>About the Trail</h2>
+<p>
+The Kenilworth People & Places Walking Trail highlights key locations
+across the town that reflect its historical development and cultural
+heritage. The route takes visitors through important landmarks and
+areas associated with notable people and events in Kenilworth’s past.
+</p>
+
+<p>
+This digital version of the trail leaflet provides an accessible way
+for visitors and residents to explore the town while learning about
+its history and character.
+</p>
+</section>
+
+<section class="accessibility">
+<h2>Accessibility Information</h2>
+
+<p>
+The walking trail is approximately 3 miles in length and generally
+follows pavements and public pathways through Kenilworth town centre.
+</p>
+
+<p>
+Some sections may include uneven surfaces, narrow pavements, or
+gentle slopes. Visitors are advised to wear suitable footwear and
+allow additional time if travelling with children or mobility aids.
+</p>
+
+</section>
+
+</main>
+
+
+<footer>
+    <p>© 2026 Kenilworth People & Places Trail</p>
+    <p>Visitor enquiries: Warwick District Council | CV32 5HZ</p>
+</footer>
+
+
+<script>
+
+const toggleButton =
+document.querySelector(".menu-toggle");
+
+const navLinks =
+document.querySelector(".nav-links");
+
+toggleButton.addEventListener("click", () => {
+
+navLinks.classList.toggle("show");
+
+const expanded =
+toggleButton.getAttribute("aria-expanded") === "true";
+
+toggleButton.setAttribute("aria-expanded", !expanded);
+
+});
+
+</script>
+
+</body>
+
+</html>
