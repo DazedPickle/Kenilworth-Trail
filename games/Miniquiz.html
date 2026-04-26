@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenilworth Quiz</title>
+
+<style>
+:root {
+  --bg: #f4f8f1;
+  --card: #ffffff;
+  --text: #1f2a1f;
+  --muted: #5c6b5c;
+  --accent: #2f7d32;
+  --accent-2: #8bc34a;
+  --danger: #b23a48;
+  --shadow: 0 10px 25px rgba(0,0,0,0.12);
+  --radius: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: linear-gradient(180deg, #dff0d8 0%, var(--bg) 50%, #eef6eb 100%);
+  color: var(--text);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  min-height: 100vh;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+}
+
+.quiz-box {
+  width: 100%;
+  background: var(--card);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+}
+
+#question {
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  margin: 20px 0;
+}
+
+button {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #edf4ea;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: 0.15s;
+  min-height: 48px;
+}
+
+button:hover {
+  background: var(--accent-2);
+  color: white;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.correct {
+  background: var(--accent) !important;
+  color: white;
+}
+
+.wrong {
+  background: var(--danger) !important;
+  color: white;
+}
+
+#score {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* for small screens */
+@media (max-width: 400px) {
+  .quiz-box {
+    padding: 16px;
+  }
+
+  button {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+}
+
+button:hover {
+  background: var(--accent-2);
+  color: white;
+}
+
+.correct {
+  background: var(--accent) !important;
+  color: white;
+}
+
+.wrong {
+  background: var(--danger) !important;
+  color: white;
+}
+
+#score {
+  margin-top: 15px;
+  color: var(--muted);
+}
+</style>
+</head>
+
+<body>
+<div class="wrapper">
+  <div class="quiz-box">
+    <h2 id="stopTitle"></h2>
+    <p id="question"></p>
+    <div id="answers"></div>
+    <p id="score"></p>
+  </div>
+</div>
+
+<script>
+
+const quiz = [
+{
+    title: "Stop 1: War Memorial",
+    questions: [
+        {q:"When was the memorial first unveiled?", a:["1920","1922","1925"], correct:1},
+        {q:"How many names are currently carved onto the memorial?", a:["130","179","208"], correct:2}
+    ]
+},
+{
+    title: "Stop 2: WW2 Air Raid Shelter",
+    questions: [
+        {q:"How many shelters were dug in Kenilworth alone in 1939?", a:["1-8","9-16","16+"], correct:2},
+        {q:"When does the borrowell date back to?", a:["1500s","1600s","1700s"], correct:0},
+        {q:"How many people would this air raid shelter accommodate?", a:["20","50","75"], correct:1}
+    ]
+},
+{
+    title: "Stop 3: Kenilworth Castle",
+    questions: [
+        {q:"When was Kenilworth Castle built?", a:["1120","1220","1320"], correct:0},
+        {q:"When Robert Dudley took possession of the castle, who did he spend fortunes glamourising the castle for?", a:["Elizabeth I","Mary I","James I"], correct:0},
+        {q:"Who was the person that owned Kenilworth and captured Henry III and Prince Edward, ruling as an uncrowned king until Edward escaped?", a:["John de Burgh","Simon de Montfort","Humphrey de Bohun"], correct:1}
+    ]
+},
+{
+    title: "Stop 4: The Siege of 1266",
+    questions: [
+        {q:"What was the duration of the seige?", a:["2 months","4 months","6 months"], correct:2},
+        {q:"How large was the castle's garrison against the siege estimated?", a:["800","1000","1200"], correct:2},
+        {q:"What was the result of the seige?", a:["Successful Assault","Surrender due to starvation","Surrender with agreed terms"], correct:1}
+    ]
+},
+{
+    title: "Stop 5: Elizabeth I & Dudley",
+    questions: [
+        {q:"What part of the castle was dedicated to Elizabeth's sole use?", a:["The hunting forest","The dungeon","The garden"], correct:2},
+        {q:"Why did Elizabeth not marry Dudley?", a:["He was too ugly","He was a divorcee, it was too taboo","He died before their wedding"], correct:1},
+        {q:"After Dudley's death, who was Elizabeth's favourite and her suspected lover?", a:["Dudley's brother","Dudley's nephew","Dudley's son"], correct:2}
+    ]
+},
+{
+    title: "Stop 6: Castle Hill",
+    questions: [
+        {q:"What is the 'Godcake?'", a:["An ancient tool","A local culinary tradition","A triangular plot of land"], correct:2},
+        {q:"In New Row, what industry were many cottages used for in the 19th Century?", a:["Pottery making","Horn comb workshops","Weaving wool"], correct:1},
+        {q:"In Little Virginia, which historical figure is associated with planting the first potato in England?", a:["Sir Walter Raleigh","King Henry III","Sir Francis Drake"], correct:0}
+    ]
+},
+{
+    title: "Stop 7: High Street",
+    questions: [
+        {q:"Why is this street called 'High Street'?", a:["The buildings were abnormally tall","The street had many expensive clothes and jewellery shops","It sits high above the Abbey"], correct:2},
+        {q:"What is 'The Pound'?", a:["A famous local market","A place stray animals would be held until found","A place where travelling merchants would stay"], correct:1},
+        {q:"What was the original purpose of the High Street?", a:["It was a private road for the rich ","It was the main road into Coventry ","It was a path specifically for market goods and livestock"], correct:1}
+    ]
+},
+{
+    title: "Stop 8: Parliament Piece",
+    questions: [
+        {q:"What is rumoured to have happened here in 1266?", a:["Henry III won his first game of chess","Henry III held parliament","Henry III got trapped"], correct:1},
+        {q:"What is the building used for now?", a:["Traditional hay meadow","It is abandoned","It is a private estate"], correct:0},
+        {q:"Why is the Abbey considered a more likely place Henry III would have held parliament?", a:["It had stronger walls","It had a roof","It was closer to the battlefield"], correct:1}
+    ]
+},
+{
+    title: "Stop 9: Windmills & Watermills",
+    questions: [
+        {q:"How many 18th Century Windmills were built in Kenilworth?", a:["2","3","4"], correct:2},
+        {q:"How many watermills are there in Kenilworth?", a:["6","7","8"], correct:1},
+        {q:"The Town pool Bridge is marked with flood heights, how tall was the highest flood?", a:["1.8m","2.4m","3.3m"], correct:2}
+    ]
+},
+{
+    title: "Stop 10: St Nicholas Church",
+    questions: [
+        {q:"To what year does this church date back to?", a:["1150","1291","1420"], correct:1},
+        {q:"What caused the church to lose its spire in 1858?", a:["Lightning","War damage","A great fire"], correct:0},
+        {q:"In 1575 which famous figure visited the church and attended two services?", a:["Charles I","James I","Elizabeth I"], correct:2}
+    ]
+},
+{
+    title: "Stop 11: Abbey Ruins",
+    questions: [
+        {q:"When was the Augustinian priory of St Mary the Virgin raised to an Abbey?", a:["1347","1447","1547"], correct:1},
+        {q:"When was the Abbey stripped of its wealth and left to ruin?", a:["1538","1638","1738"], correct:0},
+        {q:"Who was the Abbey originally founded by?", a:["Geoffrey de Clinton","George de Clinton","John de Clinton"], correct:0}
+    ]
+},
+{
+    title: "Stop 12: Abbey End",
+    questions: [
+        {q:"What year did the two 500kg land-mines drop on Kenilworth?", a:["1939","1940","1941"], correct:1},
+        {q:"When was the clocktower unveiled?", a:["1906","1916","1926"], correct:0},
+        {q:"When was the clocktower restored after it was damaged by the land-mines?", a:["1954","1964","1974"], correct:2}
+    ]
+},
+{
+    title: "Stop 13: Kings Arms Inn",
+    questions: [
+        {q:"What was the Zizzy restaurant originally, dating back to 1563?", a:["A coaching inn","A famous restaurant","A theatre"], correct:0},
+        {q:"How many hides per week would the tannery at Talisman square produce per week?", a:["800","1200","1600"], correct:2},
+    ]
+}
+];
+
+const elements = {
+  stopTitle: document.getElementById("stopTitle"),
+  question: document.getElementById("question"),
+  answers: document.getElementById("answers"),
+  score: document.getElementById("score"),
+  quizBox: document.querySelector(".quiz-box")
+};
+
+const state = {
+  stop: 0,
+  question: 0,
+  score: 0
+};
+
+const totalQuestions = quiz.reduce((sum, stopData) => sum + stopData.questions.length, 0);
+
+function getCurrentQuestion() {
+  return quiz[state.stop]?.questions[state.question];
+}
+
+function renderQuestion() {
+  const currentStop = quiz[state.stop];
+  const currentQuestion = getCurrentQuestion();
+
+  elements.stopTitle.innerText = currentStop.title;
+  elements.question.innerText = currentQuestion.q;
+  elements.score.innerText = `Score: ${state.score}`; 
+
+  elements.answers.innerHTML = currentQuestion.a
+    .map((answer, index) => `<button data-index="${index}">${answer}</button>`)
+    .join("");
+}
+
+function moveToNextQuestion() {
+  state.question++;
+
+  if (state.question >= quiz[state.stop].questions.length) {
+    state.stop++;
+    state.question = 0;
+  }
+
+  if (state.stop >= quiz.length) {
+    elements.quizBox.innerHTML = `<h2>Finished!</h2><p>Your score: ${state.score}/${totalQuestions}</p>`;
+    return;
+  }
+
+  renderQuestion();
+}
+
+function checkAnswer(choice) {
+  const currentQuestion = getCurrentQuestion();
+  const { correct } = currentQuestion;
+  const buttons = elements.answers.querySelectorAll("button");
+
+  buttons.forEach((button, index) => {
+    button.disabled = true;
+    if (index === correct) button.classList.add("correct");
+    if (index === choice && index !== correct) button.classList.add("wrong");
+  });
+
+  if (choice === correct) {
+    state.score++;
+    elements.score.innerText = `Score: ${state.score}`;
+  }
+
+  setTimeout(moveToNextQuestion, 1000);
+}
+
+elements.answers.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+  if (!button || button.disabled) return;
+
+  checkAnswer(Number(button.dataset.index));
+});
+
+renderQuestion();
+
+</script>
+
+</body>
+</html>
